@@ -1,0 +1,47 @@
+############################## Contact #############################
+contact:
+  enable : true
+  title : Lorem Ipsum Dolor
+  # subtitle : Yhteystiedot
+  content : |
+     Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+     Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+
+  # Contact details - henkilökohtaiset yhteystiedot
+  contact_people:
+    - #name: "Lorem Ipsum"
+      person: "Lorem Ipsum"
+      phone: "123 456 7890"
+      email: "lorem@lorem.com"
+      
+    - #name: "" 
+      person: "Dolor Amet"
+      phone: "123 456 7890"
+      email: "dolor@lorem.com"
+
+  # Yleiset yhteystiedot (jos haluat säilyttää)
+  #contact_list:
+  #  - icon : ti-mobile # themify icon pack : https://themify.me/themify-icons
+  #    info : "Puhelin: +358 40 350 5591"
+  #    
+  #  - icon : ti-email # themify icon pack : https://themify.me/themify-icons
+  #    info : "Sähköposti: info@juuri.ai"
+
+# Contact form
+  # Contact form
+  contact_form:
+    enable : true
+    form_action : "https://juuri.ai.wottil.eu/contact" # nginx configuration file /etc/nginx/sites-available/customer-sites
+    name : "Nimi"
+    email : "Sähköpostiosoite"
+    phonenumber : "Puhelin"
+    message : "Mitä haluaisit ratkaista?"
+    submit : "Lähetä"
+    services_title: "Olen kiinnostunut"
+    services:
+    - label: "Palvelu 1"
+      value: "palvelu-1"
+    - label: "Palvelu 2"
+      value: "palvelu-2"
+    - label: "Palvelu 3"
+      value: "palvelu-3"

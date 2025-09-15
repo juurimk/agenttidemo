@@ -1,0 +1,18 @@
+############################# About ###################################
+about:
+  enable : true
+  # title : 3 syytä valita Juuri.ai
+  about_item :
+  - icon : far fa-edit # Font Awesome regular icon (design/planning)
+    title : Lorem Ipsum Dolor
+    content : Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+
+  - icon : far fa-lightbulb # Font Awesome regular icon (ideas/service)
+    title : Consectetur Adipiscing
+    content : Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.
+
+  - icon : far fa-chart-bar # Font Awesome regular icon (growth/stats)
+    title : Sed Do Eiusmod
+    content : Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet consectetur adipiscing elit.
+
+  

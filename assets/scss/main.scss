@@ -1,0 +1,1241 @@
+/*
+====================================================================
+  Safe Hugo Template SCSS - Ultra-Clean Version
+  Minimal template to ensure compilation works
+====================================================================
+*/
+
+{{- $siteset := site.Params.siteset | default "korpi" -}}
+{{- $sitesetData := index site.Data "siteset-colors" -}}
+{{- $currentSiteset := index $sitesetData.sitesets $siteset -}}
+
+/* 
+ * Safe Generated SCSS
+ * Siteset: {{ $siteset }}
+ * Button Style: {{ site.Params.buttons.style | default "fill" }}
+ */
+
+// =============================================================================
+// CSS Custom Properties (Runtime Theming)
+// =============================================================================
+:root {
+{{ range $sectionsetName, $colors := $currentSiteset.sectionsets }}
+  --siteset-{{ $sectionsetName }}-bg: {{ $colors.bg_color }};
+  --siteset-{{ $sectionsetName }}-color: {{ $colors.color }};
+  --siteset-{{ $sectionsetName }}-button: {{ $colors.button }};
+  --siteset-{{ $sectionsetName }}-button-text: {{ $colors.button_text }};
+  --siteset-{{ $sectionsetName }}-h2: {{ $colors.h2 }};
+  --siteset-{{ $sectionsetName }}-mask-color: {{ $colors.mask_color }};
+  {{ if $colors.opacity }}
+  --opacity-{{ $sectionsetName }}-highlighted: {{ $colors.opacity.button_highlighted }};
+  --opacity-{{ $sectionsetName }}-table-bg: {{ $colors.opacity.button_table_bg }};
+  --opacity-{{ $sectionsetName }}-hover: {{ $colors.opacity.button_hover }};
+  {{ end }}
+  --text-{{ $sectionsetName }}-highlighted: {{ $colors.text_highlighted }};
+  --text-{{ $sectionsetName }}-section_description: {{ $colors.text_description }};
+{{ end }}
+
+  /* Legacy compatibility */
+  {{ with index $currentSiteset.sectionsets "lightset" }}
+  --color-primary: {{ .button }};
+  --color-primary-dark: {{ .h2 }};
+  --color-text-primary: {{ .color }};
+  --color-text-dark: {{ .color }};
+  {{ end }}
+  {{ with index $currentSiteset.sectionsets "darkset" }}
+  --color-bg-primary: {{ .bg_color }};
+  --color-text-white: {{ .color }};
+  {{ end }}
+  {{ with index $currentSiteset.sectionsets "neutralset" }}
+  --color-bg-secondary: {{ .bg_color }};
+  --color-bg-light: {{ .bg_color }};
+  {{ end }}
+
+  /* Additional variables */
+  --color-border-light: #ddd;
+  --color-border-medium: rgba(255, 255, 255, 0.2);
+  --color-border-dark: #dedede;
+  --color-bg-tertiary: #2c2f36;
+  --color-bg-white: #ffffff;
+  --color-text-secondary: #888;
+  --color-text-tertiary: #cfcfcf;
+  --color-accent: #2795e9;
+  --color-success: #4CAF50;
+  --color-error: #e74c3c;
+  --sitefont: "{{ site.Params.sitefont | default "DM Sans" }}", sans-serif;
+
+    /* Button Corner Radius System */
+  {{ if site.Params.buttons.custom_radius }}
+  --button-border-radius: {{ site.Params.buttons.custom_radius }};
+  {{ else if eq site.Params.buttons.corners "round" }}
+  --button-border-radius: 50px;
+  {{ else if eq site.Params.buttons.corners "rounded" }}
+  --button-border-radius: 8px;
+  {{ else }}
+  --button-border-radius: 0px;
+  {{ end }}
+}
+// =============================================================================
+// Base Styles
+// =============================================================================
+
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+
+
+
+html {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-secondary);
+  scroll-behavior: auto;
+}
+
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  font-family: var(--sitefont);
+  color: var(--color-text-secondary);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  font-weight: 400 !important;
+  font-family: var(--sitefont);
+  color: var(--color-text-primary);
+  margin-top: 40px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 2.4rem;
+  line-height: 1.2;
+}
+
+ h2 {
+  font-weight: 400 !important;
+  color: var(--color-text-primary);
+  margin-top:0px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 2.1rem;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+h3, h4 {
+  font-weight: 400;
+  font-family: "Open Sans", sans-serif;
+  color: var(--color-text-primary);
+}
+
+h5, h6 {
+  font-weight: 400;
+  font-family: var(--sitefont);
+  color: var(--color-text-primary);
+}
+p {
+  font-family: var(--sitefont);
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  margin-bottom: 1.2rem !important;
+}
+
+// UUSI (vähemmän tärkeä):
+.navigation a,
+.hero-area a,
+.footer-section a,
+.social-icons a {
+  color: var(--color-text-white);
+  transition: all 0.3s ease-in 0s;
+  text-decoration: none;
+  
+  &:focus, &:hover {
+    color: var(--color-primary-dark);
+    text-decoration: none;
+  }
+}
+
+
+// =============================================================================
+// Button System
+// =============================================================================
+.btn, .btn-main, .btn-transparent, .service-button, .newsletter-submit-btn, .btn-newsletter,
+.portfolio-filter .btn, input[type="submit"], button, .input-wrapper,
+.btn-hero-cta, .btn-contact-submit, .btn-back-services, .faq-filter-btn,
+.hero-area .btn, .banner-section .btn, .call-to-action .btn, .cta-section .btn {
+  
+  {{ if site.Params.buttons.custom_radius }}
+  border-radius: {{ site.Params.buttons.custom_radius }} !important;
+  {{ else if eq site.Params.buttons.corners "round" }}
+  border-radius: 50px !important;
+  {{ else if eq site.Params.buttons.corners "rounded" }}
+  border-radius: 8px !important;
+  {{ else }}
+  border-radius: 0px !important;
+  {{ end }}
+  
+  padding: 10px 30px;
+  border: 2px solid var(--siteset-lightset-button);
+  transition: all 0.3s ease !important;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  
+  // Poista selaimen oletustyyli
+  outline: none !important;
+  box-shadow: none !important;
+  
+  &:focus, &:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: var(--siteset-lightset-button) !important;
+  }
+  
+  {{ if eq site.Params.buttons.style "fill" }}
+  background-color: var(--siteset-lightset-button) !important;
+  color: var(--siteset-lightset-bg) !important;
+  
+  &:hover {
+    background-color: transparent !important;
+    color: var(--siteset-lightset-button) !important;
+  }
+  {{ else }}
+  background-color: transparent !important;
+  color: var(--siteset-lightset-button) !important;
+  
+  &:hover {
+    background-color: var(--siteset-lightset-button) !important;
+    color: var(--siteset-lightset-bg) !important;
+  }
+  {{ end }}
+}
+
+// =============================================================================
+// Sectionset Button Styles
+// =============================================================================
+{{ range $sectionsetName, $colors := $currentSiteset.sectionsets }}
+.section-{{ $sectionsetName }} {
+  background-color: var(--siteset-{{ $sectionsetName }}-bg);
+  color: var(--siteset-{{ $sectionsetName }}-color);
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--siteset-{{ $sectionsetName }}-h2);
+  }
+  
+  .color {
+    color: var(--siteset-{{ $sectionsetName }}-h2) !important;
+  }
+  
+  .btn, .btn-main, .btn-transparent, .service-button, .newsletter-submit-btn, .btn-newsletter,
+  .btn-hero-cta, .btn-contact-submit, .btn-back-services, .faq-filter-btn {
+    border-color: var(--siteset-{{ $sectionsetName }}-button) !important;
+    
+    {{ if eq site.Params.buttons.style "fill" }}
+    background-color: var(--siteset-{{ $sectionsetName }}-button) !important;
+    color: var(--siteset-{{ $sectionsetName }}-bg) !important;
+    
+    &:hover {
+      background-color: transparent !important;
+      color: var(--siteset-{{ $sectionsetName }}-button) !important;
+    }
+    {{ else }}
+    background-color: transparent !important;
+    color: var(--siteset-{{ $sectionsetName }}-button) !important;
+    
+    &:hover {
+      background-color: var(--siteset-{{ $sectionsetName }}-button) !important;
+      color: var(--siteset-{{ $sectionsetName }}-bg) !important;
+    }
+    {{ end }}
+  }
+  
+  .member-meta .member-name {
+    color: var(--siteset-{{ $sectionsetName }}-button);
+  }
+  
+  .border-meghna {
+    background-color: var(--siteset-{{ $sectionsetName }}-h2);
+    
+    &:before {
+      background-color: var(--siteset-{{ $sectionsetName }}-h2);
+    }
+  }
+}
+{{ end }}
+
+
+
+.btn-calendar-fill {
+  {{ if site.Params.buttons.custom_radius }}
+  border-radius: {{ site.Params.buttons.custom_radius }} !important;
+  {{ else if eq site.Params.buttons.corners "round" }}
+  border-radius: 50px !important;
+  {{ else if eq site.Params.buttons.corners "rounded" }}
+  border-radius: 8px !important;
+  {{ else }}
+  border-radius: 0px !important;
+  {{ end }}
+  
+  padding: 10px 30px;
+  border: 2px solid var(--siteset-lightset-button);
+  transition: all 0.3s ease !important;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.95rem;
+  display: inline-block;
+  
+  // Poista selaimen oletustyyli
+  outline: none !important;
+  box-shadow: none !important;
+  
+  &:focus, &:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: var(--siteset-lightset-button) !important;
+  }
+  
+  // Aina fill-tyyli riippumatta site.Params.buttons.style asetuksesta
+  background-color: var(--siteset-lightset-button) !important;
+  color: var(--siteset-lightset-bg) !important;
+  
+  &:hover {
+    background-color: transparent !important;
+    color: var(--siteset-lightset-button) !important;
+  }
+}
+
+// Sectionset-versiot
+{{ range $sectionsetName, $colors := $currentSiteset.sectionsets }}
+.section-{{ $sectionsetName }} .btn-calendar-fill {
+  border-color: var(--siteset-{{ $sectionsetName }}-button) !important;
+  background-color: var(--siteset-{{ $sectionsetName }}-button) !important;
+  color: var(--siteset-{{ $sectionsetName }}-bg) !important;
+  
+  &:hover {
+    background-color: transparent !important;
+    color: var(--siteset-{{ $sectionsetName }}-button) !important;
+  }
+}
+{{ end }}
+
+
+
+
+// Navigation sectionset-spesifiset .btn-calendar-fill tyylit
+{{ range $sectionsetName, $colors := $currentSiteset.sectionsets }}
+.section-{{ $sectionsetName }} ~ .navigation .btn-calendar-fill,
+.navigation.section-{{ $sectionsetName }} .btn-calendar-fill {
+  border-color: var(--siteset-{{ $sectionsetName }}-button) !important;
+  background-color: var(--siteset-{{ $sectionsetName }}-button) !important;
+  color: #ffffff !important;
+  padding: 6px 20px !important; // Pienempi padding navigaatiossa
+  
+  &:hover {
+    background-color: transparent !important;
+    color: var(--siteset-{{ $sectionsetName }}-button) !important;
+  }
+}
+{{ end }}
+
+
+.navigation.section-lightset .btn-calendar-fill {
+  background-color: var(--siteset-lightset-button) !important;
+  color: var(--siteset-lightset-bg) !important;
+}
+
+.navigation.section-darkset .btn-calendar-fill {
+  background-color: var(--siteset-darkset-button) !important;
+  color: var(--siteset-darkset-bg) !important;
+}
+
+.navigation.section-neutralset .btn-calendar-fill {
+  background-color: var(--siteset-neutralset-button) !important;
+  color: var(--siteset-neutralset-bg) !important;
+}
+
+.navigation.section-coloriset .btn-calendar-fill {
+  background-color: var(--siteset-coloriset-button) !important;
+  color: var(--siteset-coloriset-bg) !important;
+}
+
+// =============================================================================
+// Navigation
+// =============================================================================
+.navigation {
+  // background-color: rgba(255, 255, 255, 0.95) !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin-bottom: 0;
+  z-index: 1030;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  
+  .navbar-nav .nav-link {
+    color: var(--color-text-dark) !important;
+    padding: 15px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    
+    &:hover {
+      color: var(--color-primary) !important;
+    }
+  }
+}
+
+.navbar-nav {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+.navbar-toggler {
+  border: none;
+  background-color: transparent;
+  padding: 10px; // Sama padding kaikille sivuille = neliö
+  width: 44px; // Kiinteä leveys
+  height: 44px; // Kiinteä korkeus = täydellinen neliö
+  transition: all 0.3s ease;
+  border-radius: 4px; // Normaali pyöristetty
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .navbar-toggler-icon {
+    background-image: none;
+    width: 24px;
+    height: 2px;
+    background-color: var(--color-primary-dark);
+    display: block;
+    position: relative;
+    transition: background-color 0.3s ease;
+
+    &::before,
+    &::after {
+      content: '';
+      background-color: var(--color-primary-dark);
+      width: 24px;
+      height: 2px;
+      position: absolute;
+      left: 0;
+      transition: background-color 0.3s ease;
+    }
+
+    &::before {
+      top: -7px;
+    }
+
+    &::after {
+      top: 7px;
+    }
+  }
+
+  // Hover tai valikko avoinna: vihreä tausta, valkoiset viivat
+  &:hover,
+  &.active,
+  &[aria-expanded="true"] {
+    background-color: var(--color-primary-dark);
+
+    .navbar-toggler-icon,
+    .navbar-toggler-icon::before,
+    .navbar-toggler-icon::after {
+      background-color: #fff;
+    }
+  }
+
+  // NELIÖMÄINEN MUOTO vain active-tilassa (painettu/valikko auki)
+  &:active,
+  &.active,
+  &[aria-expanded="true"] {
+    border-radius: 0px !important;
+  }
+}
+
+// Sectionset-spesifiset navigaation tyylit
+{{ range $sectionsetName, $colors := $currentSiteset.sectionsets }}
+{{ if or (eq $sectionsetName "coloriset") (eq $sectionsetName "darkset") }}
+.section-{{ $sectionsetName }} ~ .navigation .navbar-nav .nav-link,
+.navigation.section-{{ $sectionsetName }} .navbar-nav .nav-link {
+  color: #fff !important;
+  
+  &:hover {
+    color: var(--siteset-{{ $sectionsetName }}-button) !important;
+  }
+}
+{{ else }}
+.section-{{ $sectionsetName }} ~ .navigation .navbar-nav .nav-link,
+.navigation.section-{{ $sectionsetName }} .navbar-nav .nav-link {
+  color: var(--siteset-{{ $sectionsetName }}-button) !important;
+  
+  &:hover {
+    color: var(--siteset-{{ $sectionsetName }}-h2) !important;
+  }
+}
+{{ end }}
+{{ end }}
+
+// Sectionset-spesifiset toggler tyylit
+{{ range $sectionsetName, $colors := $currentSiteset.sectionsets }}
+{{ if or (eq $sectionsetName "coloriset") (eq $sectionsetName "darkset") }}
+.navigation.section-{{ $sectionsetName }} .navbar-toggler {
+  .navbar-toggler-icon,
+  .navbar-toggler-icon::before,
+  .navbar-toggler-icon::after {
+    background-color: #fff;
+  }
+  
+  &:hover,
+  &.active,
+  &[aria-expanded="true"] {
+    background-color: var(--siteset-{{ $sectionsetName }}-button);
+    
+    .navbar-toggler-icon,
+    .navbar-toggler-icon::before,
+    .navbar-toggler-icon::after {
+      background-color: #fff;
+    }
+  }
+}
+{{ end }}
+{{ end }}
+
+// =============================================================================
+// Responsive Typography
+// =============================================================================
+@media (min-width: 1200px) {
+  p {
+    font-size: 1.1rem !important;
+    line-height: 1.6 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  p {
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+  }
+  
+  .section {
+    
+  }
+}
+
+@media (max-width: 576px) {
+  p {
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+  }
+  
+  .section {
+    padding: 40px 0!important;
+  }
+  
+  .faq-section.section {
+    padding-bottom: 0px !important;
+  }
+}
+
+// =============================================================================
+// Essential Layout Styles
+// =============================================================================
+.section {
+  padding: 80px 0;
+}
+
+.section-sm {
+  padding: 70px 0;
+}
+
+.section-xs {
+  padding: 50px 0;
+}
+
+.bg-one {
+  background-color: var(--color-bg-primary);
+}
+
+.bg-dark {
+  background: var(--color-bg-tertiary);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-50 {
+  margin-bottom: 50px;
+}
+
+.title {
+  padding-bottom: 10px;
+  
+  p {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 992px) {
+  h1 {
+    font-size: 1.8rem !important;
+  }
+}
+
+
+@media (max-width: 576px) {
+  p {
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+  }
+  
+  .section {
+    padding: 40px 0!important;
+  }
+  
+  .title h2,
+  h2 {
+    font-size: 1.7rem !important;
+  }
+}
+
+.border-meghna {
+  border-top: 0px solid var(--color-border-light)!important;
+  height: 0px;
+  margin: 15px auto 0;
+  position: relative;
+  width: 30%;
+  
+  &:before {
+    background-color: var(--color-primary);
+    content: '';
+    height: 6px;
+    left: 50%;
+    margin-left: -20px;
+    position: absolute;
+    top: -4px;
+    width: 50px;
+  }
+}
+
+
+// =============================================================================
+// Universal Border Radius System
+// =============================================================================
+
+{{ if eq site.Params.buttons.image_corners "follow" }}
+// Kortit ja kuvat seuraavat button corners -asetusta
+.service-card, 
+.double-image,
+.double-image-container,
+.member-photo, 
+.image-card,
+.gallery-item, 
+.portfolio-item, 
+.blog-post-image, 
+.post-block, 
+.card, 
+.feature-card, 
+.testimonial-card, 
+.expert-image,
+.post-block .media-wrapper img {
+  border-radius: var(--button-border-radius) !important;
+}
+
+// Blog single sivun kuvat - spesifimpi sääntö
+.post-single-content img,
+.section .post-single-content img,
+.section_single_blog .post-single-content img,
+.section-lightset .post-single-content img {
+  border-radius: var(--button-border-radius) !important;
+}
+
+{{ else }}
+// Kortit ja kuvat ovat suorakulmaiset
+.service-item,
+.service-card, 
+.image-card,
+.member-photo, 
+.double-image-container,
+.gallery-item, 
+.portfolio-item, 
+.blog-post-image, 
+.showcase-image-top,
+.showcase-image-bottom,
+.post-block, 
+.card, 
+.feature-card, 
+.testimonial-card, 
+.expert-image,
+.post-block .media-wrapper img {
+  border-radius: 0px !important;
+}
+
+// Blog single sivun kuvat - spesifimpi sääntö
+.post-single-content img,
+.section .post-single-content img,
+.section_single_blog .post-single-content img,
+.section-lightset .post-single-content img {
+  border-radius: 0px !important;
+}
+
+{{ end }}
+
+// =============================================================================
+// Footer Styles
+// =============================================================================
+.footer-section {
+  padding: 40px 0 20px !important;
+  margin: 0 !important;
+  position: relative !important;
+  bottom: auto !important;
+  
+  .container {
+    margin-bottom: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-section {
+    padding: 30px 0 15px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer-section {
+    padding: 25px 0 10px !important;
+  }
+}
+
+.footer-content {
+  padding-right: 40px;
+  
+  @media (max-width: 992px) {
+    padding-right: 20px;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  
+  @media (max-width: 768px) {
+    padding-right: 0;
+    margin-bottom: 35px;
+    text-align: center;
+  }
+}
+
+.footer-description p {
+  font-size: 0.9rem !important;
+  line-height: 1.5 !important;
+  margin-bottom: 30px !important;
+  font-weight: 400 !important;
+  
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+}
+
+.footer-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  @media (min-width: 768px) {
+    align-items: flex-start;
+  }
+  
+  img {
+    height: 35px !important;
+    max-height: 35px !important;
+    width: auto !important;
+  }
+}
+
+.footer-social {
+  text-align: left;
+  
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+  
+  h6 {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    margin-bottom: 25px !important;
+    text-transform: none !important;
+  }
+}
+
+.footer-social-subtitle {
+  font-size: 16px !important;
+  font-weight: 300 !important;
+  margin-bottom: 0 !important;
+  text-transform: none !important;
+}
+
+.footer-sitemap,
+.footer-privacy {
+  h6 {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    margin-bottom: 25px !important;
+    text-transform: none !important;
+  }
+}
+
+.footer-link-list {
+  li a {
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: all 0.3s ease;
+  }
+}
+
+.social-icons {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 20px;
+  
+  @media (max-width: 768px) {
+    justify-content: center;
+    gap: 25px;
+  }
+  
+  li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.3s ease;
+    
+    i {
+      font-size: 24px !important;
+      transition: all 0.3s ease;
+    }
+    
+    &:hover i {
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.footer-business {
+  font-size: 0.9rem !important;
+  line-height: 1.5 !important;
+  margin-bottom: 30px !important;
+  font-weight: 400 !important;
+  
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+}
+
+.footer-brand-text {
+  font-size: 0.9rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.5px !important;
+  line-height: 1.5 !important;
+  opacity: 0.85;
+  padding: 0.5rem 1rem 0.5rem;
+  text-align: center !important;
+  margin-bottom: 30px !important;
+  
+  @media (max-width: 768px) {
+    padding: 1rem 0 2rem 0 !important;
+    text-align: center;
+  }
+}
+
+footer {
+  flex-shrink: 0;
+}
+
+// Scroll-to-top button
+.scroll-to-top {
+  {{ if site.Params.buttons.custom_radius }}
+  border-radius: {{ site.Params.buttons.custom_radius }} !important;
+  {{ else if eq site.Params.buttons.corners "round" }}
+  border-radius: 50px !important;
+  {{ else if eq site.Params.buttons.corners "rounded" }}
+  border-radius: 8px !important;
+  {{ else }}
+  border-radius: 0px !important;
+  {{ end }}
+  
+  width: 45px !important;
+  height: 45px !important;
+  font-size: 20px !important;
+  padding: 0 !important;
+  margin: 0px auto 0 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  outline: none !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  transition: opacity 0.2s ease !important;
+  background-color: transparent !important;
+}
+
+// ==============================================
+// Demoshow specific tweaks
+// ==============================================
+#demoshow {
+  .services-grid {
+    margin-top: 120px !important; // extra space above cards
+  }
+
+  .service-image-area {
+    margin-bottom: 18px; // more space between image and title
+  }
+
+  .service-title {
+    font-size: 1.1rem !important; // smaller title size
+    font-weight: 600;
+  }
+
+  .service-short-description p {
+    font-size: 15.2px !important;
+    font-weight: 400 !important;
+    line-height: 1.55 !important;
+    margin-bottom: 0.6rem !important;
+  }
+
+  .service-cta .btn {
+    margin-top: 10px !important;
+  }
+}
+
+// =============================================================================
+// Footer Sectionset-spesifiset tyylit
+// =============================================================================
+
+// Lightset footer
+.footer-section.section-lightset {
+  .footer-description p {
+    color: var(--siteset-lightset-color) !important;
+  }
+  
+  .footer-business {
+    color: var(--siteset-lightset-color) !important;
+  }
+  
+  .footer-social h6,
+  .footer-social-subtitle,
+  .footer-sitemap h6,
+  .footer-privacy h6 {
+    color: var(--siteset-lightset-color) !important;
+  }
+  
+  .footer-link-list li a {
+    color: var(--siteset-lightset-color) !important;
+    
+    &:hover {
+      color: var(--siteset-lightset-button) !important;
+    }
+  }
+  
+  .social-icons li a i {
+    color: var(--siteset-lightset-color) !important;
+    
+    &:hover {
+      color: var(--siteset-lightset-button) !important;
+    }
+  }
+  
+  .footer-brand-text {
+    color: var(--siteset-lightset-color) !important;
+    border-top: 1px solid transparent !important;
+    opacity: 0.7;
+  }
+}
+
+// Neutralset footer
+.footer-section.section-neutralset {
+  .footer-description p {
+    color: var(--siteset-neutralset-color) !important;
+  }
+  
+  .footer-business {
+    color: var(--siteset-neutralset-color) !important;
+  }
+  
+  .footer-social h6,
+  .footer-social-subtitle,
+  .footer-sitemap h6,
+  .footer-privacy h6 {
+    color: var(--siteset-neutralset-color) !important;
+  }
+  
+  .footer-link-list li a {
+    color: var(--siteset-neutralset-color) !important;
+    
+    &:hover {
+      color: var(--siteset-neutralset-button) !important;
+    }
+  }
+  
+  .social-icons li a i {
+    color: var(--siteset-neutralset-color) !important;
+    
+    &:hover {
+      color: var(--siteset-neutralset-button) !important;
+    }
+  }
+  
+  .footer-brand-text {
+    color: var(--siteset-neutralset-color) !important;
+    border-top: 1px solid transparent !important;
+    opacity: 0.7;
+  }
+}
+
+// Darkset footer (säilytetään valkoinen teksti)
+.footer-section.section-darkset {
+  .footer-description p {
+    color: #ffffff !important;
+  }
+  
+  .footer-business {
+    color: #ffffff !important;
+  }
+  
+  .footer-social h6,
+  .footer-social-subtitle,
+  .footer-sitemap h6,
+  .footer-privacy h6 {
+    color: #ffffff !important;
+  }
+  
+  .footer-link-list li a {
+    color: #ffffff !important;
+    
+    &:hover {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+  }
+  
+  .social-icons li a i {
+    color: #ffffff !important;
+    
+    &:hover {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+  }
+  
+  .footer-brand-text {
+    color: #ffffff !important;
+    border-top: 1px solid transparent !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .scroll-to-top {
+    border: 1px solid var(--siteset-darkset-button) !important;
+    color: var(--siteset-darkset-button) !important;
+    background-color: transparent !important;
+    
+    &:hover,
+    &:active {
+      opacity: 0.5 !important;
+    }
+  }
+}
+
+// Coloriset footer (säilytetään valkoinen teksti)
+.footer-section.section-coloriset {
+  .footer-description p {
+    color: #ffffff !important;
+  }
+  
+  .footer-business {
+    color: #ffffff !important;
+  }
+  
+  .footer-social h6,
+  .footer-social-subtitle,
+  .footer-sitemap h6,
+  .footer-privacy h6 {
+    color: #ffffff !important;
+  }
+  
+  .footer-link-list li a {
+    color: #ffffff !important;
+    
+    &:hover {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+  }
+  
+  .social-icons li a i {
+    color: #ffffff !important;
+    
+    &:hover {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+  }
+  
+  .footer-brand-text {
+    color: #ffffff !important;
+    border-top: 1px solid transparent !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .scroll-to-top {
+    border: 1px solid var(--siteset-coloriset-button) !important;
+    color: var(--siteset-coloriset-button) !important;
+    background-color: transparent !important;
+    
+    &:hover,
+    &:active {
+      opacity: 0.5 !important;
+    }
+  }
+}
+// =============================================================================
+// KORJAUS: Tumman viivan poisto vasemmalta puolelta
+// =============================================================================
+
+// Container korjaukset - estä negatiiviset marginaalit
+.container,
+.container-fluid,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+// Row korjaukset - estä negatiiviset marginaalit
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+// Hero-alueen erityiskorjaus
+.hero-area-video {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  
+  // Poista negatiiviset marginaalit
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important;
+}
+
+// Navigation korjaus
+.navigation {
+  border: none !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important; // Vain alareunaan
+  outline: none !important;
+}
+
+// Section korjaukset
+section {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+// Kaikki elementit joilla saattaa olla border-left
+*[class*="border"],
+*[class*="shadow"] {
+  border-left: none !important;
+  box-shadow: none !important;
+}
+
+// Mobiili-spesifiset korjaukset
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden !important;
+  }
+  
+  .container {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    max-width: 100% !important;
+  }
+  
+  .hero-area-video {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+// Varmista että viewport ei aiheuta ongelmia
+@media (max-width: 576px) {
+  * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+
+
+
+
+// =============================================================================
+// Remove Blue Text Decoration Color from All Links
+// =============================================================================
+
+// Target all links and remove blue text-decoration-color
+a,
+a:link,
+a:visited,
+a:hover,
+a:active,
+a:focus {
+  text-decoration-color: transparent !important;
+  // tai vaihtoehtoisesti:
+  // text-decoration-color: currentColor !important;
+}
+
+// Specifically target social links and team member links
+.mask,
+a.mask,
+a.mask:hover {
+  text-decoration-color: transparent !important;
+}
+
+// All links in team section
+.team-member a,
+.team-member a:hover {
+  text-decoration-color: transparent !important;
+}
+
+// Blog links
+.post-block a,
+.post-block a:hover,
+.read-more-link,
+.read-more-link:hover {
+  text-decoration-color: transparent !important;
+}
+
+// =============================================================================
+// Conditional Section Imports
+// =============================================================================
+{{ if site.Params.sections }}
+  {{ range $sectionName, $sectionConfig := site.Params.sections }}
+    {{ if $sectionConfig.enable }}
+      {{ $scssPath := printf "scss/sections/%s.scss" $sectionName }}
+      {{ if resources.Get $scssPath }}
+/* Section: {{ $sectionName }} */
+@import "sections/{{ $sectionName }}";
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}

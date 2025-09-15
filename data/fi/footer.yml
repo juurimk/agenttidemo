@@ -1,0 +1,59 @@
+############################## Footer #############################
+footer:
+  enable: true
+  description: |
+    Autamme yrityksiä kasvamaan digitaalisessa maailmassa tehostamalla toimintaa modernin markkinoinnin sekä tekoälyn ja automaation avulla. Keskitymme ratkaisuihin, jotka tekevät monimutkaisesta yksinkertaista ja vapauttavat aikaa siihen mikä todella vie liiketoimintaa eteenpäin.
+
+  business_info: |
+    Juuri.ai Oy
+    Y-tunnus: 3550186-8
+  
+  # Logo section
+  logo_white: "images/juuridemo_logo_white.png"
+  logo_white_webp: "images/juuridemo_logo_white.webp"
+  logo_black: "images/juuridemo_logo.png"        # tai juuridemo_logo_black.png jos on
+  logo_black_webp: "images/juuridemo_logo.webp"  # tai juuridemo_logo_black.webp jos on
+  logo_alt: "Juuri.ai"
+  # footer_logo: "images/juuri-ai-logo-white.png"  # POISTETTU TILAPÄISESTI
+  logo_webp: "images/juuridemo_logo_white.webp"
+  logo_alt: "Juuri.ai"
+  
+  # Footer links section
+  footer_links:
+    - name: "Ota yhteyttä"
+      url: "#otayhteytta"
+    
+  # Privacy and legal links section
+  privacy_links:
+    - name: "Tietosuojaseloste"
+      url: "/Privacy_Policy_JuuriAI_Tietosuojaseloste.pdf"
+      target: "_blank"
+    # - name: "Käyttöehdot"
+    #   url: "/kayttoehdot"
+    # - name: "Evästekäytäntö"
+    #   url: "/evastekaytanto"
+    
+  # Social media section
+  #social_title: "Seuraa meitä sosiaalisessa mediassa"
+  #social_subtitle: "Logot"
+  
+  # Social media links
+  social_links:
+  #  - icon: "fab fa-facebook"
+  #   link: "https://facebook.com/juuriai"
+  #    target: "_blank"
+      
+    - icon: "fab fa-linkedin" 
+      link: "https://www.linkedin.com/company/juuri-ai/"
+      target: "_blank"
+      
+  #  - icon: "fab fa-twitter"
+  #    link: "https://twitter.com/juuriai"
+  #    target: "_blank"
+      
+   # - icon: "fab fa-instagram"
+  #    link: "https://instagram.com/juuriai"
+   #   target: "_blank"
+  
+  # Copyright text (appears under logo)
+  copyright: "© 2025 Juuri.ai Oy. Kaikki oikeudet pidätetään."

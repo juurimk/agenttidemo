@@ -1,0 +1,83 @@
+{{ define "main" }}
+
+
+<!-- SCSS lataus -->
+{{ $singleCSS := resources.Get "scss/sections/single.scss" | toCSS }}
+<link rel="stylesheet" href="{{ $singleCSS.RelPermalink }}">
+
+{{ partial "navigation.html" . }}
+
+{{/* Get sectionset for individual blog posts */}}
+{{ $sectionset := index site.Params.sectionsets "blog_single" | default "lightset" }}
+
+<section class="section section-{{ $sectionset }}">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+
+        <!-- Blogipostauksen otsikko, päivämäärä ja kirjoittaja -->
+        <div class="blog-meta">
+          <h1 class="blog_single_main_h1">{{ .Title }}</h1>
+          <div class="blog-meta-info">
+            <div class="blog-date text-muted d-inline-block">
+              {{ .Date.Format "02.01.2006" }}
+            </div>
+            {{ if .Params.author }}
+            <div class="blog-author text-muted d-inline-block">
+              {{ .Params.author }}
+            </div>
+            {{ end }}
+          </div>
+          {{ if or .Params.ingress .Params.description }}
+          <div class="blog-ingress text-muted mt-3">{{ .Params.ingress | default .Params.description | markdownify }}</div>
+          {{ end }}
+        </div>
+
+      </div>
+
+      <div class="col-lg-8 offset-lg-2">
+        <div class="post-single-content">
+          {{ .Content }}
+          {{ if site.Params.post_share }}
+          {{ partial "post-share.html" . }}
+          {{ end }}
+          <div class="blog-post-footer" style="margin-top:2.5rem; font-weight:700;">
+            {{ with .Params.blogfooter }}{{ . | markdownify }}{{ end }}
+          </div>
+          {{ with .Params.blogcta }}
+        <div class="blog-post-cta">
+          {{ $re := `\[([^\]]+)\]\(([^\)]+)\)` }}
+          {{ . | replaceRE $re `<a href="$2" class="btn btn-calendar-fill" target="_blank">$1</a>` | safeHTML }}
+        </div>
+          {{ end }}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{{ if or .Prev .Next }}
+<section class="pagination section-{{ $sectionset }}" style="border-radius: 0; padding-top: 0px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 40px;">
+          {{ if and .Prev (eq .Prev.Section "blog") (ne .Permalink .Prev.Permalink) }}
+          <a class="btn" href="{{ .Prev.Permalink }}">← Edellinen</a>
+          {{ else }}
+          <div></div>
+          {{ end }}
+          {{ if and .Next (eq .Next.Section "blog") (ne .Permalink .Next.Permalink) }}
+          <a class="btn" href="{{ .Next.Permalink }}">Seuraava →</a>
+          {{ else }}
+          <div></div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}
+
+{{ end }}

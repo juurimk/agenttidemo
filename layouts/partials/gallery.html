@@ -1,0 +1,213 @@
+{{ $data := index site.Data site.Language.Lang }}
+
+{{/* Get sectionset for gallery section */}}
+{{ $sectionset := index site.Params.sectionsets "gallery" | default "lightset" }}
+
+{{ if $data.gallery.gallery.enable }}
+{{ with $data.gallery.gallery }}
+{{"<!-- Start Gallery Section -->" | safeHTML}}
+<section id="gallery" class="section gallery-section section-{{ $sectionset }}">
+  <div class="container">
+    
+    {{"<!-- Section Title & Description -->" | safeHTML}}
+    <div class="title text-center">
+      <h2>{{ .title }}</h2>
+      
+      {{ if .description }}
+      <div class="gallery-description">
+        <p>{{ .description | safeHTML }}</p>
+      </div>
+      {{ end }}
+    </div>
+
+    {{"<!-- Gallery Filter -->" | safeHTML}}
+    {{ if .filter.enable }}
+    <div class="gallery-filter">
+      <div class="btn btn-transparent filter-item selected" data-filter="*">{{ .filter.all_text | default "All" }}</div>
+      {{ range .filter.items }}
+      <div class="btn btn-transparent filter-item" data-filter=".{{ .slug }}">{{ .name }}</div>
+      {{ end }}
+    </div>
+    {{ end }}
+
+    {{"<!-- Gallery Grid -->" | safeHTML}}
+    <div class="row">
+      {{/* Tallenna ylätason show_text-arvo muuttujaan */}}
+      {{ $showText := .show_text }}
+      
+      {{ range $index, $item := .items }}
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="gallery-item {{ $item.category_slug }}{{ if not $showText }} gallery-item-image-only{{ end }}">
+          <div class="gallery-image" onclick="openLightbox('{{ $item.image | absURL }}', '{{ $item.title }}', '{{ $item.description }}', '{{ $item.category }}', '{{ if $showText }}true{{ else }}false{{ end }}')">
+            <img src="{{ $item.image | absURL }}" alt="{{ $item.title }}">
+          </div>
+          
+          {{/* Näytä tekstisisältö vain jos show_text on true */}}
+          {{ if $showText }}
+          <div class="gallery-content">
+            {{ if $item.title }}
+            <h3>
+              {{ if $item.link }}<a href="{{ $item.link }}">{{ $item.title }}</a>{{ else }}{{ $item.title }}{{ end }}
+            </h3>
+            {{ end }}
+            
+            {{ if $item.description }}
+            <p>{{ $item.description | truncate 100 }}</p>
+            {{ end }}
+            
+            {{ if $item.category }}
+            <div class="category">{{ $item.category }}</div>
+            {{ end }}
+          </div>
+          {{ end }}
+        </div>
+      </div>
+      {{ end }}
+    </div>
+
+    {{"<!-- Load More Button -->" | safeHTML}}
+    {{ if gt (len .items) 3 }}
+    <div class="gallery-load-more">
+      <button id="gallery-load-more-btn" class="btn btn-transparent">
+        {{ .load_more.button_text | default "Näytä lisää" }}
+      </button>
+    </div>
+    {{ end }}
+
+  </div>
+</section>
+{{"<!-- /gallery -->" | safeHTML}}
+
+<!-- Lightbox Modal -->
+<div id="galleryLightbox" onclick="closeLightbox()">
+  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 95%; max-height: 95%; text-align: center;">
+    <img id="lightboxImage" style="max-width: 100%; max-height: 80vh; object-fit: contain; display: block;">
+    <div id="lightboxTextBox" style="background: white; padding: 25px; text-align: left; border-radius: 0 0 0px 0px; min-width: 400px; display: none;">
+      <h3 id="lightboxTitle" style="margin: 0 0 15px 0; color: #333; font-size: 1.8rem; font-family: var(--sitefont); font-weight: 600;"></h3>
+      <p id="lightboxDescription" style="margin: 0 0 15px 0; color: #333; line-height: 1.6; font-family: var(--sitefont); font-size: 1.1rem;"></p>
+      <div id="lightboxCategory" style="color: #333; font-size: 1rem; font-weight: 500; text-transform: uppercase; font-family: var(--sitefont);"></div>
+    </div>
+  </div>
+  <button onclick="closeLightbox()" style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 30px; cursor: pointer; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">&times;</button>
+</div>
+
+<script>
+function openLightbox(imageSrc, title, description, category, showText) {
+  const lightbox = document.getElementById('galleryLightbox');
+  const lightboxImage = document.getElementById('lightboxImage');
+  const lightboxTitle = document.getElementById('lightboxTitle');
+  const lightboxDescription = document.getElementById('lightboxDescription');
+  const lightboxCategory = document.getElementById('lightboxCategory');
+  const lightboxTextBox = document.getElementById('lightboxTextBox');
+  
+  lightboxImage.src = imageSrc;
+
+  // Näytä tekstilaatikko ja tekstit vain jos showText on tosi (string 'true')
+  if (showText === 'true') {
+    lightboxTitle.textContent = title;
+    lightboxDescription.textContent = description;
+    lightboxCategory.textContent = category;
+    lightboxTextBox.style.display = 'block';
+    lightboxImage.onload = function() {
+      lightboxTextBox.style.width = lightboxImage.offsetWidth + 'px';
+    };
+  } else {
+    // Piilota tekstilaatikko ja tyhjennä tekstit
+    lightboxTextBox.style.display = 'none';
+    lightboxTitle.textContent = '';
+    lightboxDescription.textContent = '';
+    lightboxCategory.textContent = '';
+  }
+
+  lightbox.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('galleryLightbox').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+// Close lightbox on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeLightbox();
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.gallery-filter .filter-item');
+    const galleryItems = document.querySelectorAll('.gallery-section [class*="col-"]');
+    const loadMoreBtn = document.getElementById('gallery-load-more-btn');
+    let visibleCount = 3;
+    let currentFilter = '*';
+
+    // Filter functionality
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            filterButtons.forEach(btn => btn.classList.remove('selected'));
+            this.classList.add('selected');
+
+            currentFilter = this.dataset.filter;
+            visibleCount = 3;
+            
+            const filteredItems = Array.from(galleryItems).filter(item => {
+                const galleryItem = item.querySelector('.gallery-item');
+                if (!galleryItem) return false;
+                return currentFilter === '*' || galleryItem.classList.contains(currentFilter.replace('.', ''));
+            });
+
+            galleryItems.forEach(item => item.style.display = 'none');
+            
+            filteredItems.forEach((item, index) => {
+                if (index < visibleCount) {
+                    item.style.display = 'block';
+                }
+            });
+
+            updateLoadMoreButton(filteredItems);
+        });
+    });
+
+    // Load more functionality
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+            const filteredItems = Array.from(galleryItems).filter(item => {
+                const galleryItem = item.querySelector('.gallery-item');
+                if (!galleryItem) return false;
+                return currentFilter === '*' || galleryItem.classList.contains(currentFilter.replace('.', ''));
+            });
+
+            filteredItems.forEach((item, index) => {
+                if (index >= visibleCount && index < visibleCount + 3) {
+                    item.style.display = 'block';
+                }
+            });
+
+            visibleCount += 3;
+            updateLoadMoreButton(filteredItems);
+        });
+    }
+
+    function updateLoadMoreButton(filteredItems) {
+        if (!loadMoreBtn) return;
+        
+        if (visibleCount >= filteredItems.length) {
+            loadMoreBtn.style.display = 'none';
+        } else {
+            loadMoreBtn.style.display = 'inline-block';
+        }
+    }
+
+    // Initialize - show first 3 items
+    const allItems = Array.from(galleryItems);
+    allItems.forEach((item, index) => {
+        if (index >= 3) {
+            item.style.display = 'none';
+        }
+    });
+    updateLoadMoreButton(allItems);
+});
+</script>
+{{ end }}
+{{ end }}

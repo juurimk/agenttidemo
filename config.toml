@@ -1,0 +1,408 @@
+################################# Default configuration ###################
+baseURL = "https://juuridemo.netlify.app/"
+title = "juuri.ai"
+#theme = "Juuri.ai"
+# default language
+defaultContentLanguage = "fi"
+# post pagination
+[pagination]
+pagerSize = 6
+# post excerpt
+summaryLength = "15"
+# disqus short name
+# disqusShortname = "" # get your shortname form here : https://disqus.com
+# disable language - disable French to keep only Finnish and English
+disableLanguages = ["fr"]
+
+# Taxonomies
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+############################# Plugins ##########################
+# css plugins
+[[params.plugins.css]]
+link = "plugins/bootstrap/bootstrap.min.css"
+[[params.plugins.css]]
+link = "plugins/magnific-popup/magnific-popup.css"
+[[params.plugins.css]]
+link = "plugins/slick/slick.css"
+[[params.plugins.css]]
+link = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+
+# js plugins
+[[params.plugins.js]]
+link = "plugins/jquery/jquery.min.js"
+[[params.plugins.js]]
+link = "plugins/bootstrap/bootstrap.min.js"
+[[params.plugins.js]]
+link = "plugins/slick/slick.min.js"
+[[params.plugins.js]]
+link = "plugins/shuffle/shuffle.min.js"
+[[params.plugins.js]]
+link = "plugins/magnific-popup/jquery.magnific-popup.min.js"
+[[params.plugins.js]]
+link = "plugins/lazy-load/lozad.min.js"
+[[params.plugins.js]]
+link = "plugins/google-map/map.js"
+[[params.plugins.js]]
+link = "js/newsletter.js"
+
+################### English Navigation ########################
+[[Languages.en.menu.main]]
+name = "About"
+url = "#about"
+weight = 1
+
+[[Languages.en.menu.main]]
+name = "Services"
+url = "#services"
+weight = 2
+
+[[Languages.en.menu.main]]
+name = "Portfolio"
+url = "#portfolio"
+weight = 3
+
+[[Languages.en.menu.main]]
+name = "Team"
+url = "#team"
+weight = 4
+
+[[Languages.en.menu.main]]
+name = "Pricing"
+url = "#pricing"
+weight = 5
+
+[[Languages.en.menu.main]]
+name = "Blog"
+url = "#blog"
+weight = 6
+
+[[Languages.en.menu.main]]
+name = "Contact"
+url = "#contact"
+weight = 7
+
+################### Finnish Navigation ########################
+# [[Languages.fi.menu.main]]
+# name = "Ominaisuudet"
+# url = "#about"
+# weight = 1
+
+[[Languages.fi.menu.main]]
+name = "Kampanjamanageri"
+url = "/kampanjamanageri/"
+weight = 1
+
+# [[Languages.fi.menu.main]]
+# name = "Portfolio"
+# url = "#portfolio"
+# weight = 3
+
+# [[Languages.fi.menu.main]]
+# name = "Perustajat"
+# url = "#team"
+# weight = 4
+
+# [[Languages.fi.menu.main]]
+# name = "Hinnat"
+# url = "#pricing"
+# weight = 5
+
+# [[Languages.fi.menu.main]]
+# name = "Uutiskirje"
+# url = "#newsletter"
+# weight = 6
+
+# [[Languages.fi.menu.main]]
+#  name = "Blogi"
+#  url = "#blog"
+#  weight = 7
+
+[[Languages.fi.menu.main]]
+name = "Sisällöntuottaja"
+url = "/sisallontuottaja/"
+weight = 2
+
+[[Languages.fi.menu.main]]
+name = "Remonttilaskuri"
+url = "/remonttilaskuri/"
+weight = 3
+
+############################# Default Parameters ##########################
+[params]
+enable = true
+logo = "images/juuridemo_logo.svg"
+logo_white = "images/juuridemo_logo_white.svg"  # Valkoinen logo tummille taustoille
+# Meta data
+description = "Yhdistämme tekoälyn ja inhimillisen markkinoinnin tulokselliseksi kokonaisuudeksi. Vapauta kasvu – ota AI osaksi liiketoimintaasi jo tänään."
+# og kuva
+og_image = "images/juuri_ai_og_1200x628.jpg"
+author = "Juuri.ai"
+# Google Analytics
+google_analytics_id = "G-SFX2TLQLTE"
+# post share
+post_share = true
+calendar_url = "https://calendar.app.google/zeDfowAGrkcpjp9r9"
+calendar_text = "Varaa Aika"
+blogBannerTitle = "Juuri.ai artikkelit"
+blogBannerSubtitle = "Your Subtitle Here"
+
+######## Site Fonts ###########
+#sitefontlink = "https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+#sitefont = "\"Open Sans\", sans-serif"
+# Popular font combinations you can copy/paste:
+
+# Open Sans (current - clean, professional)
+# sitefontlink = "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+# sitefont = "Open Sans"
+
+# Inter (modern interface font - excellent for digital products)
+# sitefontlink = "https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;1,400&display=swap"
+# sitefont = "Inter"
+
+# Poppins (persoonallisempi mutta trendikäs - friendly, rounded)
+# sitefontlink = "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400&display=swap"
+# sitefont = "Poppins"
+
+# Source Sans Pro (Adobe's humanist sans-serif)
+# sitefontlink = "https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&display=swap"
+# sitefont = "Source Sans 3"
+
+# Nunito Sans (persoonallinen - warm, friendly personality)
+# sitefontlink = "https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,700;1,400&display=swap"
+# sitefont = "Nunito Sans"
+
+# Manrope (modern geometric - excellent readability)
+# sitefontlink = "https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap"
+# sitefont = "Manrope"
+
+ # Open Sans (current - clean, professional)
+ sitefontlink = "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+ sitefont = "Open Sans"
+
+# System fonts (fastest - no web loading)
+# sitefontlink = ""
+# sitefont = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+
+# Comfortaa (asiakas)
+# sitefontlink = "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Comfortaa:wght@300..700&display=swap"
+# sitefont = "Open Sans, Comfortaa"
+
+############################# Siteset Colors Configuration ##########################
+# Choose siteset colors from available options: saaristo, kaste, korpi, hiekka, loimu, viima, verso, kipina, apila, helle, sahakka, ruska, harmonia, tuli, yo, tiikeri, syksy, neon, pastilli, pinkki, onecolor, terra, jklav1, jklav2, cp
+siteset = "viima"
+
+[params.sections]
+    [params.sections.banner]
+      enable = false
+    [params.sections.team]
+      enable = false
+    [params.sections.service]
+      enable = false
+    [params.sections.services]
+      enable = false
+    [params.sections.feature]
+      enable = false
+    [params.sections.about]
+      enable = false
+    [params.sections.cta]
+      enable = false
+    [params.sections.skill]
+      enable = false
+    [params.sections.portfolio]
+      enable = false
+    [params.sections.funfacts]
+      enable = false
+    [params.sections.comparison]
+      enable = false
+    [params.sections.pricing]
+      enable = false
+    [params.sections.testimonial]
+      enable = false
+    [params.sections.blog]
+      enable = false
+    [params.sections.faq]
+      enable = false
+    [params.sections.newsletter]
+      enable = false
+    [params.sections.contact]
+      enable = false
+    [params.sections.gallery]
+      enable = false
+    [params.sections.map]
+      enable = false
+    [params.sections.footer]
+      enable = true
+    [params.sections.showcase]
+      enable = false
+    [params.sections.fullshow]
+      enable = false
+    [params.sections.logoband]
+      enable = false
+    [params.sections.fullshow2]
+      enable = false
+    [params.sections.demoshow]
+      enable = true
+    [params.sections.double]
+      enable = false
+    [params.sections.double2]
+      enable = false
+    
+
+
+
+# Section-specific sectionset configuration
+# Each section can use different sectionsets within the same siteset
+# Available sectionsets: lightset, neutralset, darkset, coloriset
+[params.sectionsets]
+
+  about = "darkset"        # About section
+  article = "coloriset"   # blogit
+  banner = "lightset"        # Hero/banner section
+  benefits = "darkset"    # ikonibanneri singlesivulla
+  blog = "lightset"         # Blog section
+  blog_single = "lightset"   # Individual blog posts
+  comparison = "lightset" # Comparison section
+  contact = "lightset"       # Contact section
+  cta = "coloriset"          # Call-to-action section
+  double = "darkset" # kaksi tasa divia ja button
+  double2 = "lightset" # kaksi tasa divia ja button, jos käytössä enemmän kuin 1 doublea
+  expert = "darkset"     # singlesivulla kouluttaja osio
+  faq = "neutralset"         # FAQ section
+  feature = "coloriset"   # ikoninostot section 
+  footer = "blackset" # footer section (custom black variant under current siteset)
+  fullshow = "coloriset" # fullscreen taustakuva osio
+  fullshow2 = "darkset" # fullscreen taustakuva osio
+  demoshow = "darkset"   # demoshow section (hero + demo cards)
+  funfacts = "neutralset"   # Funfacts section (tumma teksti valkoiselle taustakuvalle)
+  gallery = "coloriset"   # gridilistaus tuotteista
+  logoband = "coloriset" # asiakaslogot osio
+  main_text = "lightset"   # service-single sivun ensimmäinen palvelukuvaus
+  navigation = "coloriset"   # navbar
+  newsletter = "coloriset"   # Newsletter section 
+  packages = "coloriset"       # services singlesivun main teksti osio
+  portfolio = "lightset"    # Portfolio section
+  pricing = "lightset"    # Pricing section
+  privacy = "neutralset" # privacy, jos ei pdf
+  service = "lightset"   # Service section
+  service_faq = "neutralset" # services single sivun faq
+  service_pages = "lightset"  # Individual service pages 
+  services = "neutralset"   # Services section
+  services-hero = "lightset"   # Services hero single sivuilla (tuotesivut)
+  showcase = "lightset" # mainososio
+  team = "lightset"        # Team section
+  testimonial = "coloriset" # Testimonial section
+
+
+# preloader
+[params.preloader]
+enable = false
+preloader = "/images/juuri-ai-logo-rgb.svg"
+
+# cookies
+[params.cookies]
+enable = false
+expire_days = 2
+
+# google map
+[params.map]
+enable = false
+gmap_api = ""
+map_latitude = "60.976896"
+map_longitude = "24.467889"
+map_marker = "images/marker.png"
+
+# Navigation button
+[params.nav_button]
+enable = false
+label = "Varaa aika"
+link = "https://calendar.app.google/zeDfowAGrkcpjp9r9"
+
+############################# Button System Configuration ##########################
+# Yksinkertainen button määrittely - värimäärittelyjen mukaisesti
+[params.buttons]
+  # Button style - ghost tai fill
+  # "ghost" = läpinäkyvä pohja, täytetty hover
+  # "fill"  = täytetty pohja, läpinäkyvä hover
+  style = "ghost"
+ 
+  
+  # Button corner style
+  # "square"  = 0px (suorakulmainen)
+  # "rounded" = 8px (lievästi pyöristetty)  
+  # "round"   = 50px (täysin pyöreä)
+  corners = "round"
+
+  # Valinnainen mukautettu pyöristys (ohittaa corners asetuksen)
+  # custom_radius = "0px"
+
+############################# Image System Configuration ##########################
+
+ # img corner style
+image_corners = "none"  # tai "follow" tai "none" Follow seuraa valittua buttonia, none -> square
+
+############################# Markdown Configuration ###################
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+    [markup.goldmark.parser]
+      attribute = true
+      autoHeadingID = true
+  [markup.highlight]
+    style = "github"
+    lineNos = false
+    tabWidth = 2
+
+
+############################# social icons ##########################
+[[params.social]]
+enable = true
+icon = "fab fa-facebook" # Font Awesome icon
+link = "#"
+
+[[params.social]]
+enable = true
+icon = "fab fa-twitter" # Font Awesome icon
+link = "#"
+
+[[params.social]]
+enable = false
+icon = "fab fa-youtube" # Font Awesome icon
+link = "#"
+
+[[params.social]]
+enable = true
+icon = "fab fa-linkedin" # Font Awesome icon
+link = "#"
+
+[[params.social]]
+enable = false
+icon = "fab fa-dribbble" # Font Awesome icon
+link = "#"
+
+[[params.social]]
+enable = false
+icon = "fab fa-pinterest" # Font Awesome icon
+link = "#"
+
+
+################################ English Language ########################
+[Languages.en]
+languageName = "English"
+languageCode = "en-us"
+contentDir = "content/english"
+weight = 1
+home = "Home"
+copyright = "Copyright &copy; 2025 juuri.ai. All rights reserved."
+
+################################ Finnish Language ########################
+[Languages.fi]
+languageName = "Suomi"
+languageCode = "fi-fi"
+contentDir = "content/finnish"
+weight = 2
+home = "Koti"
+copyright = "Copyright &copy; 2025 juuri.ai. Kaikki oikeudet pidätetään."

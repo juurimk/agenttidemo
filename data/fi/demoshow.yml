@@ -1,0 +1,42 @@
+demoshow:
+  enable: true
+  title: ""
+  description: ""
+  text_position: "center" # left, right, center
+
+  background:
+    type: "svg" # image | svg | color
+    # image: "images/backgrounds/fullshow.jpg"
+    svg:
+      pattern: "images/backgrounds/bg-logo.svg"
+      opacity: 0.09
+      repeat: "no-repeat"
+      size: "cover"
+      position: "right"
+      attachment: "fixed"
+
+  # Kortit – palvelukorttien kaltaiset
+  items:
+    - name: "Markkinointiagentti"
+      slug: "kampanjamanageri"
+      link: "/kampanjamanageri/"
+      image: "images/services/service-juurisyy.png"
+      image_webp: "images/services/service-juurisyy.webp"
+      short_description: |
+        Kampanja-agentti toimii markkinoinnin kampanjamanagerin roolissa. Agentilla on käytössään markkinointiin erikoistuneita ala-agentteja, kuten strategi, brändi-agentti, copywriter, asiakasvastaava ja visuaalinen suunnittelija.
+
+    - name: "Sisältöagentti"
+      slug: "sisallontuottaja"
+      link: "/sisallontuottaja/"
+      image: "images/services/service-juurisinulle.png"
+      image_webp: "images/services/service-juurisinulle.webp"
+      short_description: |
+        Sisällöntuottaja kykenee tuottamaan sisältöä kanavakohtaisesti. Agentti ottaa syötteenä vastaan asiakkaan artikkelin ja suunnittelee sen pohjalta sosiaalisen median sisällöt kanavittain ja antaa tarvittaessa esim. lyhyt videon käsikirjoituksen.
+
+    - name: "Remonttilaskuri"
+      slug: "remonttilaskuri"
+      link: "/remonttilaskuri/"
+      image: "images/services/service-juurinyt.png"
+      image_webp: "images/services/service-juurinyt.webp"
+      short_description: |
+        Remonttilaskurissa asiakas antaa remontin kohteen, tilan kuvan ja mitä haluaa saada aikaiseksi. Laskuri osaa analysoida kuvan, tarpeen ja tekee arvion remontin hinnasta työlajeineen ja materiaaleineen ja antaa asiakkaalle arvion remontin hinnasta. Yritys saa liidin laskurin käytöstä.

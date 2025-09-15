@@ -1,0 +1,60 @@
+############################### services ############################
+services:
+  enable: true
+  title: "Lorem Ipsum"
+  
+  # Service single page button (jos haluat näyttää yhteisen painikkeen)
+  single_page_button:
+    enable: false
+    label: "Lorem Ipsum"
+    link: "#palvelut"
+  
+  # Service single page contact section (ennen contact formia)
+  contact_section:
+    enable: true
+    title: "Lorem Ipsum Dolor"
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  
+  # Service items - vain etusivun korttien tiedot
+  service_items:
+    # Service 1
+    - name: "Palvelu 1"
+      subtitle: "Dolor sit amet consectetur"
+      price: "Lorem Ipsum!"
+      slug: "lorem-ipsum-1"
+      link: "#otayhteytta"
+      image: "images/services/service-juurisyy.png"
+      image_webp: "images/services/service-juurisyy.webp"
+      short_description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
+      bullet_description: |
+        - Lorem ipsum dolor sit amet consectetur
+        - Adipiscing elit sed do eiusmod tempor
+        - Incididunt ut labore et dolore magna
+
+    # Service 2
+    - name: "Palvelu 2"
+      subtitle: "Sed do eiusmod tempor"
+      price: "Lorem Ipsum!"
+      slug: "consectetur-adipiscing"
+      link: "#otayhteytta"
+      image: "images/services/service-juurinyt.png"
+      image_webp: "images/services/service-juurinyt.webp"
+      short_description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi."
+      bullet_description: |
+        - Duis aute irure dolor in reprehenderit
+        - Voluptate velit esse cillum dolore
+        - Fugiat nulla pariatur excepteur sint
+
+    # Service 3
+    - name: "Palvelu 3"
+      subtitle: "Veniam quis nostrud"
+      price: "Lorem €/h"
+      slug: "ut-enim-minim"
+      link: "#otayhteytta"
+      image: "images/services/service-juurisinulle.png"
+      image_webp: "images/services/service-juurisinulle.webp"
+      short_description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim."
+      bullet_description: |
+        - Sed ut perspiciatis unde omnis iste
+        - Natus error sit voluptatem accusantium
+        - Doloremque laudantium totam rem aperiam

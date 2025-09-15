@@ -1,0 +1,46 @@
+{{ $data := index site.Data site.Language.Lang }}
+{{ $sectionset := index site.Params.sectionsets "banner" | default "lightset" }}
+
+{{ if $data.banner.banner.enable }}
+{{ with $data.banner.banner }}
+{{"<!-- Welcome Slider with Conditional Background -->" | safeHTML}}
+<section class="hero-area hero-area-video banner-section section-{{ $sectionset }} text-{{ .text_align | default "center" }}" aria-labelledby="hero-title">
+
+  <!-- Video or Image Background -->
+  {{ if eq .media_type "video" }}
+  <video autoplay muted loop playsinline class="hero-video" aria-hidden="true">
+    <source src="{{ .video | absURL }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  {{ else }}
+  <div class="hero-video image-background" style="background-image: url('{{ .bg_image_webp | absURL }}');"></div>
+  {{ end }}
+
+  <div class="video-overlay"></div>
+
+  <div class="container-fluid h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+      <div class="col-12 text-{{ .text_align | default "center" }}">
+        <div class="block banner-content text-{{ .text_align | default "center" }}">
+          {{ if .icon }}
+          <div class="video-button">
+            <i class="{{ .icon }}"></i>
+          </div>
+          {{ end }}
+          <h1 id="hero-title">{{ .title | markdownify }}</h1>
+          <p class="hero-p">{{ .content | markdownify }}</p>
+          {{ if .button.enable }}
+          {{ with .button }}
+          <a href="{{ .link }}" class="btn btn-calendar-fill page-scroll" role="button" aria-label="{{ .label }}">
+            {{ .label }}
+          </a>
+          {{ end }}
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{{"<!-- /Welcome Slider -->" | safeHTML}}
+{{ end }}
+{{ end }}
