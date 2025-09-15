@@ -20,23 +20,23 @@ demoshow:
     - name: "Markkinointiagentti"
       slug: "kampanjamanageri"
       link: "/kampanjamanageri/"
-      image: "images/services/service-juurisyy.png"
-      image_webp: "images/services/service-juurisyy.webp"
+      image: "images/kampanja_manageri.jpg"
+      image_webp: "images/kampanja_manageri.jpg"
       short_description: |
         Kampanja-agentti toimii markkinoinnin kampanjamanagerin roolissa. Agentilla on käytössään markkinointiin erikoistuneita ala-agentteja, kuten strategi, brändi-agentti, copywriter, asiakasvastaava ja visuaalinen suunnittelija.
 
     - name: "Sisältöagentti"
       slug: "sisallontuottaja"
       link: "/sisallontuottaja/"
-      image: "images/services/service-juurisinulle.png"
-      image_webp: "images/services/service-juurisinulle.webp"
+      image: "images/sisallontuottaja.jpg"
+      image_webp: "images/sisallontuottaja.jpg"
       short_description: |
         Sisällöntuottaja kykenee tuottamaan sisältöä kanavakohtaisesti. Agentti ottaa syötteenä vastaan asiakkaan artikkelin ja suunnittelee sen pohjalta sosiaalisen median sisällöt kanavittain ja antaa tarvittaessa esim. lyhyt videon käsikirjoituksen.
 
     - name: "Remonttilaskuri"
       slug: "remonttilaskuri"
       link: "/remonttilaskuri/"
-      image: "images/services/service-juurinyt.png"
-      image_webp: "images/services/service-juurinyt.webp"
+      image: "images/remonttilaskuri.jpg"
+      image_webp: "images/remonttilaskuri.jpg"
       short_description: |
         Remonttilaskurissa asiakas antaa remontin kohteen, tilan kuvan ja mitä haluaa saada aikaiseksi. Laskuri osaa analysoida kuvan, tarpeen ja tekee arvion remontin hinnasta työlajeineen ja materiaaleineen ja antaa asiakkaalle arvion remontin hinnasta. Yritys saa liidin laskurin käytöstä.
