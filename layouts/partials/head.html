@@ -34,9 +34,12 @@
 	{{ end }}
 	<link rel="stylesheet" href="{{ $css.Permalink }}" media="screen">
 
-	{{ "<!--Favicon-->" | safeHTML }}
+{{ "<!--Favicon-->" | safeHTML }}
 	<link rel="shortcut icon" href="{{ `images/favicon.png` | absURL }}" type="image/x-icon">
 	<link rel="icon" href="{{ `images/favicon.png` | absURL }}" type="image/x-icon">
+
+	{{ $lazyJS := resources.Get "js/lazy-load.js" | resources.Minify }}
+	<script src="{{ $lazyJS.Permalink }}" defer></script>
 
 	{{ with site.Params.google_analytics_id }}
 	{{ "<!-- Global Site Tag (gtag.js) - Google Analytics -->" | safeHTML }}

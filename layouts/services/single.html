@@ -83,6 +83,10 @@
 </section>
 {{ end }}
 
+{{ if and .Params.agent_form .Params.agent_form.enable }}
+  {{ partial "agent-form.html" (dict "Page" . "Form" .Params.agent_form) }}
+{{ end }}
+
 
   {{/* Palvelun sisältö */}}
   {{ $sectionset := index site.Params.sectionsets "service_pages" | default "lightset" }}

@@ -1,0 +1,179 @@
+{{ $form := .Form }}
+{{ if not $form }}{{ return }}{{ end }}
+{{ $sectionset := "lightset" }}
+{{ with site.Params.sectionsets }}
+  {{ $sectionset = (index . "agent_form") | default (index . "service_pages") | default "lightset" }}
+{{ end }}
+{{ $formID := default "repurposer-agent-form" $form.form_id }}
+{{ $statusID := printf "%s-status" $formID }}
+<section id="{{ $form.anchor_id | default $formID }}" class="agent-form-page section-{{ $sectionset }}">
+  <div class="agent-form-hero">
+    <div class="container">
+      <h1>{{ $form.hero_title | default $form.title }}</h1>
+      {{ if or $form.hero_subtitle $form.description }}
+      <p>{{ $form.hero_subtitle | default $form.description }}</p>
+      {{ end }}
+    </div>
+  </div>
+
+  <div class="agent-form-body-wrapper">
+    <div class="container">
+      <form id="{{ $formID }}" class="agent-form-body" novalidate data-webhook="{{ $form.webhook_url }}" data-format="{{ $form.request_format | default "json" }}">
+        <div class="agent-step agent-step-input">
+          <h2>{{ $form.step_1_title | default $form.article_label }}</h2>
+          {{ if $form.step_1_description }}
+          <p class="agent-step-description">{{ $form.step_1_description }}</p>
+          {{ end }}
+          <textarea id="{{ $formID }}-article" name="article" class="agent-textarea" placeholder="{{ $form.article_placeholder | default "Liitä artikkelin teksti..." }}" required></textarea>
+        </div>
+
+        <div class="agent-step agent-step-channels">
+          <h2>{{ $form.step_2_title | default $form.channel_title }}</h2>
+          {{ if or $form.step_2_description $form.channel_hint }}
+          <p class="agent-step-description">{{ $form.step_2_description | default $form.channel_hint }}</p>
+          {{ end }}
+
+          {{ if $form.channel_options }}
+          <div class="agent-channel-grid" role="group" aria-label="{{ $form.channel_title | default "Valitse kanavat" }}">
+            {{ range $form.channel_options }}
+            <label class="agent-channel-toggle">
+              <input type="checkbox" value="{{ .id }}" name="channels">
+              <span class="agent-channel-label">{{ .label }}</span>
+            </label>
+            {{ end }}
+          </div>
+          {{ end }}
+        </div>
+
+        <div class="agent-actions">
+          {{ if $form.consent_label }}
+          <label class="agent-consent">
+            <input type="checkbox" id="{{ $formID }}-consent" name="consent" {{ if $form.consent_required }}required{{ end }}>
+            <span>{{ $form.consent_label }}</span>
+          </label>
+          {{ end }}
+          <button type="submit" class="agent-submit" id="{{ $formID }}-submit">{{ $form.submit_label | default "Lähetä" }}</button>
+          <div id="{{ $statusID }}" class="agent-form-status" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="agent-step agent-step-result">
+          <h2>{{ $form.result_title | default "Lopputulos" }}</h2>
+          {{ if $form.result_description }}
+          <p class="agent-step-description">{{ $form.result_description }}</p>
+          {{ end }}
+          <textarea id="{{ $formID }}-output" class="agent-textarea agent-output" placeholder="{{ $form.result_placeholder }}" readonly></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const form = document.getElementById('{{ $formID }}');
+  if (!form) {
+    return;
+  }
+
+  const webhook = form.dataset.webhook;
+  const statusEl = document.getElementById('{{ $statusID }}');
+  const submitBtn = document.getElementById('{{ $formID }}-submit');
+  const outputEl = document.getElementById('{{ $formID }}-output');
+  const format = form.dataset.format || 'json';
+  const channelInputs = form.querySelectorAll('.agent-channel-toggle input[type="checkbox"]');
+
+  channelInputs.forEach((input) => {
+    const toggle = input.closest('.agent-channel-toggle');
+    const syncState = () => {
+      if (toggle) {
+        toggle.classList.toggle('is-selected', input.checked);
+      }
+    };
+    input.addEventListener('change', syncState);
+    syncState();
+  });
+
+  function setStatus(message, type) {
+    if (!statusEl) {
+      return;
+    }
+    statusEl.textContent = message || '';
+    statusEl.className = 'agent-form-status ' + (type || '');
+  }
+
+  function prettify(text) {
+    if (!text) {
+      return '';
+    }
+    try {
+      const json = JSON.parse(text);
+      return JSON.stringify(json, null, 2);
+    } catch (err) {
+      return text;
+    }
+  }
+
+  form.addEventListener('submit', async function(event) {
+    event.preventDefault();
+    setStatus('', '');
+
+    if (!webhook || webhook.indexOf('oma-webhook-url') !== -1) {
+      setStatus('Webhook-osoitetta ei ole määritetty. Päivitä front matteriin oikea osoite.', 'status-error');
+      return;
+    }
+
+    if (!form.checkValidity()) {
+      setStatus('Tarkista pakolliset kentät.', 'status-error');
+      form.reportValidity();
+      return;
+    }
+
+    const formData = new FormData(form);
+    const payload = {
+      article: formData.get('article'),
+      metadata: {},
+      channels: formData.getAll('channels')
+    };
+
+    {{ if $form.metadata_fields }}
+    {{ range $form.metadata_fields }}
+    payload.metadata['{{ .id }}'] = formData.get('{{ .id }}');
+    {{ end }}
+    {{ end }}
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Lähetetään...';
+
+    try {
+      const options = { method: 'POST' };
+      if (format === 'json') {
+        options.headers = { 'Content-Type': 'application/json' };
+        options.body = JSON.stringify(payload);
+      } else {
+        options.body = formData;
+      }
+
+      const response = await fetch(webhook, options);
+      const responseText = await response.text();
+
+      if (!response.ok) {
+        throw new Error('HTTP ' + response.status + ': ' + responseText);
+      }
+
+      setStatus('{{ $form.success_message | default "Lähetys onnistui." }}', 'status-success');
+      if (outputEl) {
+        outputEl.value = prettify(responseText);
+      }
+    } catch (error) {
+      console.error('Agent form submission failed', error);
+      setStatus('{{ $form.error_message | default "Lähetys epäonnistui. Yritä uudelleen." }}', 'status-error');
+      if (outputEl) {
+        outputEl.value = '';
+      }
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '{{ $form.submit_label | default "Lähetä" }}';
+    }
+  });
+})();
+</script>

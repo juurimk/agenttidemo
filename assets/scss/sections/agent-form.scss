@@ -1,0 +1,181 @@
+.agent-form-page {
+  background-color: #ffffff;
+  color: #0f1b2b;
+  font-family: var(--sitefont);
+
+  .agent-form-hero {
+    background-color: #0f2d66;
+    color: #ffffff;
+    padding: 64px 0 32px;
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
+  .agent-form-body-wrapper {
+    padding: 40px 0 60px;
+  }
+
+  .agent-form-body {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .agent-step {
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #0f2d66;
+      margin-bottom: 10px;
+    }
+
+    .agent-step-description {
+      color: #4b5b79;
+      font-size: 0.98rem;
+      margin-bottom: 16px;
+    }
+  }
+
+  .agent-textarea {
+    width: 100%;
+    min-height: 180px;
+    border: 1px solid #c7d1e0;
+    border-radius: 6px;
+    padding: 16px;
+    background-color: #f2f5f9;
+    resize: vertical;
+    font-size: 1rem;
+    color: #0f1b2b;
+
+    &:focus {
+      outline: none;
+      border-color: #2f6df5;
+      box-shadow: 0 0 0 3px rgba(47, 109, 245, 0.15);
+    }
+
+    &.agent-output {
+      min-height: 220px;
+      background-color: #ffffff;
+    }
+  }
+
+  .agent-channel-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .agent-channel-toggle {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #c7d1e0;
+    border-radius: 999px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    span {
+      display: block;
+      padding: 6px 20px;
+      font-size: 0.95rem;
+      color: #0f2d66;
+    }
+
+    &.is-selected {
+      border-color: #2f6df5;
+      background-color: #2f6df5;
+
+      span {
+        color: #ffffff;
+      }
+    }
+
+    &:hover {
+      border-color: #2f6df5;
+    }
+  }
+
+  .agent-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+
+    .agent-consent {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: #4b5b79;
+
+      input {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .agent-submit {
+    padding: 10px 26px;
+    border-radius: 999px;
+    border: 1px solid #2f6df5;
+    background-color: transparent;
+    color: #2f6df5;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background-color: #2f6df5;
+      color: #ffffff;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  .agent-form-status {
+    font-size: 0.9rem;
+    min-height: 20px;
+
+    &.status-success {
+      color: #168450;
+    }
+
+    &.status-error {
+      color: #c7463a;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .agent-form-hero {
+      h1 {
+        font-size: 2rem;
+      }
+    }
+
+    .agent-channel-toggle {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

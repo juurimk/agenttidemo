@@ -58,11 +58,16 @@
         <article class="service-card h-100" tabindex="0" aria-label="{{ .name }}" {{ if .link }}onclick="window.location.href='{{ .link | default "#" }}'" style="cursor: pointer;"{{ end }}>
           <div class="service-card-inner">
             <div class="service-image-area">
-              <img class="service-image lozad" 
-                   data-src="{{ .image_webp | absURL }}" 
-                   onerror="this.onerror=null;this.src='{{ .image | absURL }}'" 
-                   alt="{{ .name }}"
-                   style="width: 100%; height: 100%; object-fit: cover;">
+              <picture>
+                {{ if .image_webp }}
+                <source srcset="{{ .image_webp | absURL }}" type="image/webp">
+                {{ end }}
+                <img class="service-image lazy-image"
+                     data-src="{{ .image | absURL }}"
+                     src="{{ .image | absURL }}"
+                     alt="{{ .name }}"
+                     style="width: 100%; height: 100%; object-fit: cover;">
+              </picture>
             </div>
             <div class="service-overlay">
               <div class="service-content">
