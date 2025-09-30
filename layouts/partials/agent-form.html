@@ -1,70 +1,317 @@
 {{ $form := .Form }}
-{{ if not $form }}{{ return }}{{ end }}
-{{ $sectionset := "lightset" }}
-{{ with site.Params.sectionsets }}
-  {{ $sectionset = (index . "agent_form") | default (index . "service_pages") | default "lightset" }}
-{{ end }}
-{{ $formID := default "repurposer-agent-form" $form.form_id }}
+{{ if not (and $form $form.enable) }}{{ return }}{{ end }}
+{{ $formID := default "repurposer-agent" $form.form_id }}
 {{ $statusID := printf "%s-status" $formID }}
-<section id="{{ $form.anchor_id | default $formID }}" class="agent-form-page section-{{ $sectionset }}">
-  <div class="agent-form-hero">
-    <div class="container">
+{{ $outputID := printf "%s-output" $formID }}
+
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Open Sans", sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        main {
+            background-color: #f5f5f5 !important;
+        }
+
+        section:not(.navigation) {
+            background-color: transparent !important;
+        }
+
+        #content-repurposer {
+            background-color: transparent !important;
+        }
+
+        .agent-header {
+            background-color: #0a1628;
+            color: white;
+            padding: 120px 20px 40px 20px;
+            margin-top: 0;
+        }
+
+        .agent-header-content {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        @media (max-width: 1200px) {
+            .agent-header-content {
+                max-width: 960px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .agent-header-content {
+                max-width: 720px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .agent-header-content {
+                max-width: 540px;
+            }
+        }
+
+        .agent-header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            font-weight: 400;
+            color: white !important;
+        }
+
+        .agent-header p {
+            font-size: 14px;
+            opacity: 0.9;
+            color: white;
+        }
+
+        .agent-container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 40px 15px;
+        }
+
+        @media (max-width: 1200px) {
+            .agent-container {
+                max-width: 960px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .agent-container {
+                max-width: 720px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .agent-container {
+                max-width: 540px;
+            }
+        }
+
+        .agent-section {
+            margin-bottom: 40px;
+        }
+
+        .agent-section h2 {
+            font-size: 1.1rem !important;
+            font-weight: 600;
+            margin-bottom: 12px;
+            margin-top: 10px !important;
+        }
+
+        .agent-section p {
+            font-size: 15.2px !important;
+            line-height: 1.55 !important;
+            color: #333;
+            margin-bottom: 0.6rem !important;
+            font-weight: 400 !important;
+        }
+
+        .agent-textarea-container {
+            margin-bottom: 30px;
+        }
+
+        .agent-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: "Open Sans", sans-serif;
+            font-size: 14px;
+            resize: vertical;
+            background-color: #f9f9f9;
+        }
+
+        .agent-textarea:focus {
+            outline: none;
+            border-color: #0a1628;
+            background-color: white;
+        }
+
+        .agent-instruction-text {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .agent-checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .agent-checkbox-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .agent-checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .agent-checkbox-item span {
+            font-size: 14px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .agent-submit {
+            border-radius: 50px !important;
+            padding: 10px 30px;
+            border: 2px solid var(--siteset-lightset-button, #0a1628);
+            transition: all 0.3s ease !important;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            outline: none !important;
+            box-shadow: none !important;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background-color: var(--siteset-lightset-button, #0a1628) !important;
+            color: var(--siteset-lightset-bg, white) !important;
+        }
+
+        .agent-submit:hover {
+            background-color: transparent !important;
+            color: var(--siteset-lightset-button, #0a1628) !important;
+        }
+
+        .agent-submit:focus,
+        .agent-submit:active {
+            outline: none !important;
+            box-shadow: none !important;
+            border-color: var(--siteset-lightset-button, #0a1628) !important;
+        }
+
+        .agent-submit:disabled {
+            background-color: #666 !important;
+            border-color: #666 !important;
+            color: white !important;
+            cursor: not-allowed;
+        }
+
+        .agent-result-section {
+            margin-top: 30px;
+        }
+
+        .agent-result-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .agent-result-info {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .agent-result-box {
+            width: 100%;
+            min-height: 300px;
+            max-height: 600px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: "Open Sans", sans-serif;
+            resize: vertical;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .agent-form-status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .agent-form-status.status-error {
+            background-color: #fee;
+            color: #c00;
+            border: 1px solid #fcc;
+        }
+
+        .agent-form-status.status-success {
+            background-color: #efe;
+            color: #060;
+            border: 1px solid #cfc;
+        }
+</style>
+
+<section id="{{ $form.anchor_id | default $formID }}">
+  <header class="agent-header">
+    <div class="agent-header-content">
       <h1>{{ $form.hero_title | default $form.title }}</h1>
       {{ if or $form.hero_subtitle $form.description }}
       <p>{{ $form.hero_subtitle | default $form.description }}</p>
       {{ end }}
     </div>
-  </div>
+  </header>
 
-  <div class="agent-form-body-wrapper">
-    <div class="container">
-      <form id="{{ $formID }}" class="agent-form-body" novalidate data-webhook="{{ $form.webhook_url }}" data-format="{{ $form.request_format | default "json" }}">
-        <div class="agent-step agent-step-input">
-          <h2>{{ $form.step_1_title | default $form.article_label }}</h2>
-          {{ if $form.step_1_description }}
-          <p class="agent-step-description">{{ $form.step_1_description }}</p>
+  <div class="agent-container">
+    <form id="{{ $formID }}" novalidate data-webhook="{{ $form.webhook_url }}" data-format="{{ $form.request_format | default "json" }}">
+      <section class="agent-section">
+        <h2>{{ $form.step_1_title | default $form.article_label }}</h2>
+        {{ if $form.step_1_description }}
+        <p>{{ $form.step_1_description }}</p>
+        {{ end }}
+
+        <div class="agent-textarea-container">
+          {{ if $form.article_hint }}
+          <div class="agent-instruction-text">{{ $form.article_hint }}</div>
           {{ end }}
-          <textarea id="{{ $formID }}-article" name="article" class="agent-textarea" placeholder="{{ $form.article_placeholder | default "Liitä artikkelin teksti..." }}" required></textarea>
+          <textarea name="article" class="agent-textarea" placeholder="{{ $form.article_placeholder | default "Kirjoita tai liitä artikkelisi tähän..." }}" required></textarea>
         </div>
+      </section>
 
-        <div class="agent-step agent-step-channels">
-          <h2>{{ $form.step_2_title | default $form.channel_title }}</h2>
-          {{ if or $form.step_2_description $form.channel_hint }}
-          <p class="agent-step-description">{{ $form.step_2_description | default $form.channel_hint }}</p>
-          {{ end }}
+      <section class="agent-section">
+        <h2>{{ $form.step_2_title | default $form.channel_title }}</h2>
+        {{ if or $form.step_2_description $form.channel_hint }}
+        <p>{{ $form.step_2_description | default $form.channel_hint }}</p>
+        {{ end }}
 
-          {{ if $form.channel_options }}
-          <div class="agent-channel-grid" role="group" aria-label="{{ $form.channel_title | default "Valitse kanavat" }}">
-            {{ range $form.channel_options }}
-            <label class="agent-channel-toggle">
-              <input type="checkbox" value="{{ .id }}" name="channels">
-              <span class="agent-channel-label">{{ .label }}</span>
-            </label>
-            {{ end }}
-          </div>
-          {{ end }}
-        </div>
-
-        <div class="agent-actions">
-          {{ if $form.consent_label }}
-          <label class="agent-consent">
-            <input type="checkbox" id="{{ $formID }}-consent" name="consent" {{ if $form.consent_required }}required{{ end }}>
-            <span>{{ $form.consent_label }}</span>
+        {{ if $form.channel_options }}
+        <div class="agent-checkbox-group" role="group" aria-label="{{ $form.channel_title | default "Valitse kanavat" }}">
+          {{ range $form.channel_options }}
+          <label class="agent-checkbox-item">
+            <input type="checkbox" name="channels" value="{{ .id }}" checked>
+            <span>{{ .label }}</span>
           </label>
           {{ end }}
-          <button type="submit" class="agent-submit" id="{{ $formID }}-submit">{{ $form.submit_label | default "Lähetä" }}</button>
-          <div id="{{ $statusID }}" class="agent-form-status" role="status" aria-live="polite"></div>
         </div>
+        {{ end }}
 
-        <div class="agent-step agent-step-result">
-          <h2>{{ $form.result_title | default "Lopputulos" }}</h2>
-          {{ if $form.result_description }}
-          <p class="agent-step-description">{{ $form.result_description }}</p>
-          {{ end }}
-          <textarea id="{{ $formID }}-output" class="agent-textarea agent-output" placeholder="{{ $form.result_placeholder }}" readonly></textarea>
-        </div>
-      </form>
-    </div>
+        <button type="button" class="agent-submit">{{ $form.submit_label | default "Luo sisällöt" }}</button>
+        <div id="{{ $statusID }}" class="agent-form-status" role="status" aria-live="polite"></div>
+      </section>
+
+      <section class="agent-section agent-result-section">
+        <div class="agent-result-label">{{ $form.result_title | default "Lopputulos" }}:</div>
+        {{ if $form.result_description }}
+        <div class="agent-result-info">{{ $form.result_description }}</div>
+        {{ end }}
+        <textarea id="{{ $outputID }}" class="agent-result-box" placeholder="{{ $form.result_placeholder | default "Agentin vastaus näkyy tässä, kun generointi on valmis." }}" readonly></textarea>
+      </section>
+    </form>
   </div>
 </section>
 
@@ -76,103 +323,115 @@
   }
 
   const webhook = form.dataset.webhook;
+  const submitBtn = form.querySelector('.agent-submit');
   const statusEl = document.getElementById('{{ $statusID }}');
-  const submitBtn = document.getElementById('{{ $formID }}-submit');
-  const outputEl = document.getElementById('{{ $formID }}-output');
+  const outputEl = document.getElementById('{{ $outputID }}');
   const format = form.dataset.format || 'json';
-  const channelInputs = form.querySelectorAll('.agent-channel-toggle input[type="checkbox"]');
-
-  channelInputs.forEach((input) => {
-    const toggle = input.closest('.agent-channel-toggle');
-    const syncState = () => {
-      if (toggle) {
-        toggle.classList.toggle('is-selected', input.checked);
-      }
-    };
-    input.addEventListener('change', syncState);
-    syncState();
-  });
 
   function setStatus(message, type) {
     if (!statusEl) {
       return;
     }
     statusEl.textContent = message || '';
-    statusEl.className = 'agent-form-status ' + (type || '');
+    statusEl.className = 'agent-form-status' + (type ? ' ' + type : '');
+  }
+
+  function getPayload() {
+    const articleField = form.querySelector('textarea[name="article"]');
+    const channels = Array.from(form.querySelectorAll('input[name="channels"]:checked')).map((input) => input.value);
+    const metadata = {};
+    Array.from(form.querySelectorAll('input[name^="metadata-"]')).forEach((input) => {
+      const key = input.name.replace('metadata-', '');
+      metadata[key] = input.value;
+    });
+    return {
+      articleField,
+      article: articleField ? articleField.value.trim() : '',
+      channels,
+      metadata
+    };
   }
 
   function prettify(text) {
-    if (!text) {
-      return '';
-    }
     try {
       const json = JSON.parse(text);
       return JSON.stringify(json, null, 2);
-    } catch (err) {
+    } catch (error) {
       return text;
     }
   }
 
-  form.addEventListener('submit', async function(event) {
-    event.preventDefault();
-    setStatus('', '');
+  submitBtn.addEventListener('click', async function() {
+    const { articleField, article, channels, metadata } = getPayload();
+
+    if (!article) {
+      setStatus('Lisää artikkelin teksti ennen lähettämistä.', 'status-error');
+      if (articleField) {
+        articleField.focus();
+      }
+      return;
+    }
 
     if (!webhook || webhook.indexOf('oma-webhook-url') !== -1) {
       setStatus('Webhook-osoitetta ei ole määritetty. Päivitä front matteriin oikea osoite.', 'status-error');
       return;
     }
 
-    if (!form.checkValidity()) {
-      setStatus('Tarkista pakolliset kentät.', 'status-error');
-      form.reportValidity();
-      return;
-    }
-
-    const formData = new FormData(form);
     const payload = {
-      article: formData.get('article'),
-      metadata: {},
-      channels: formData.getAll('channels')
+      article,
+      channels,
+      metadata
     };
-
-    {{ if $form.metadata_fields }}
-    {{ range $form.metadata_fields }}
-    payload.metadata['{{ .id }}'] = formData.get('{{ .id }}');
-    {{ end }}
-    {{ end }}
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Lähetetään...';
+    setStatus('Lähetetty agentille, odotetaan tuloksia hetki...', '');
 
     try {
-      const options = { method: 'POST' };
+      const options = {
+        method: 'POST',
+        mode: 'cors'
+      };
+
       if (format === 'json') {
-        options.headers = { 'Content-Type': 'application/json' };
+        options.headers = {
+          'Content-Type': 'application/json'
+        };
         options.body = JSON.stringify(payload);
       } else {
+        const formData = new FormData();
+        formData.append('article', article);
+        channels.forEach((channel) => formData.append('channels', channel));
+        Object.keys(metadata).forEach((key) => formData.append(key, metadata[key]));
         options.body = formData;
       }
 
+      console.log('Lähetetään N8N:lle:', { webhook, payload });
+
       const response = await fetch(webhook, options);
       const responseText = await response.text();
+
+      console.log('N8N vastaus:', {
+        status: response.status,
+        headers: Object.fromEntries(response.headers.entries()),
+        textLength: responseText.length,
+        textPreview: responseText.substring(0, 200) + '...'
+      });
 
       if (!response.ok) {
         throw new Error('HTTP ' + response.status + ': ' + responseText);
       }
 
-      setStatus('{{ $form.success_message | default "Lähetys onnistui." }}', 'status-success');
+      setStatus('{{ $form.success_message | default "N8N vastasi onnistuneesti!" }}', 'status-success');
       if (outputEl) {
         outputEl.value = prettify(responseText);
       }
     } catch (error) {
-      console.error('Agent form submission failed', error);
-      setStatus('{{ $form.error_message | default "Lähetys epäonnistui. Yritä uudelleen." }}', 'status-error');
-      if (outputEl) {
-        outputEl.value = '';
-      }
+      console.error('N8N yhteys epäonnistui:', error);
+      setStatus('Yhteys N8N:lle epäonnistui: ' + error.message, 'status-error');
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = '{{ $form.submit_label | default "Lähetä" }}';
+      submitBtn.textContent = '{{ $form.submit_label | default "Luo sisällöt" }}';
     }
   });
 })();
