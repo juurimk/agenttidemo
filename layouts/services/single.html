@@ -335,8 +335,14 @@
   {{/* Palvelukohtainen yhteydenotto */}}
   {{ $contactData := $data.contact.contact }}
   {{ $contactSectionset := index site.Params.sectionsets "contact" | default "lightset" }}
+  {{ $pageContactEnabled := true }}
+  {{ with .Params.contact }}
+    {{ if and (isset . "enable") (not .enable) }}
+      {{ $pageContactEnabled = false }}
+    {{ end }}
+  {{ end }}
   
-  {{ if $contactData.enable }}
+  {{ if and $contactData.enable $pageContactEnabled }}
   <section id="otayhteytta" class="contact-us section-bg section-{{ $contactSectionset }}">
     <div class="container pb-5">
       <div class="row">
